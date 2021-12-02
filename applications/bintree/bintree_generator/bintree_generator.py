@@ -3,7 +3,6 @@ import getpass
 import sys
 import shutil
 
-
 ## MSG_LENGHT
 ## MAX_SLAVES
 ## NUMER OF SAVES 
@@ -27,7 +26,7 @@ for x in range(1,NUMBER_SLAVES):
 
 # ## PUBLISH MASTER TO APPLICATION FOLDER
 print( "Generating master .c files")
-source_filepath = "bintree_master_SOURCE.c"
+source_filepath = "bintree_master_source.c"
 target_filepath = "../bintree_master.c"
 targetFile_handler = open(target_filepath, "wb+")
 sourceFile_handler = open(source_filepath, "r+")
@@ -37,13 +36,13 @@ while line:
 
     if (line.__contains__(" MSG_LENGHT")):
         line = line.rstrip('\n')
-        line += (str(MSG_LENGHT) + ";" + "\n")
+        line += (str(MSG_LENGHT) +  "\n")
     if (line.__contains__(" NUMBER_OF_SLAVES")):
         line = line.rstrip('\n')
-        line += (str(NUMBER_SLAVES) + ";"+ "\n")
+        line += (str(NUMBER_SLAVES) +  "\n")
     if (line.__contains__(" MAX_SLAVES")):
         line = line.rstrip('\n')
-        line += (str(MAX_SLAVES) + ";" + "\n")
+        line += (str(MAX_SLAVES)  + "\n")
     if (line.__contains__("int Slave[MAX_SLAVES] = {};")):
         line = line.replace("{}", "{" + slaveList + "}")
         print("entrou")
@@ -57,7 +56,7 @@ targetFile_handler.close()
 
 ### GENERATE SALVES
 print( "Generating slave .c files")
-source_file = "bintree_slave_SOURCE.c"
+source_file = "bintree_slave_source.c"
 for x in range(0,NUMBER_SLAVES):
     target_file = "../bintree_slave" + str(x) + ".c"
     targetFile_handler = open(target_file, "wb+")
@@ -68,13 +67,13 @@ for x in range(0,NUMBER_SLAVES):
 
         if (line.__contains__(" MSG_LENGHT")):
             line = line.rstrip('\n')
-            line += (str(MSG_LENGHT) + ";" + "\n")
+            line += (str(MSG_LENGHT)  + "\n")
         if (line.__contains__(" NUMBER_OF_SLAVES")):
             line = line.rstrip('\n')
-            line += (str(NUMBER_SLAVES) + ";"+ "\n")
+            line += (str(NUMBER_SLAVES) + "\n")
         if (line.__contains__(" MAX_SLAVES")):
             line = line.rstrip('\n')
-            line += (str(MAX_SLAVES) + ";" + "\n")
+            line += (str(MAX_SLAVES)  + "\n")
         if (line.__contains__("int Slave[MAX_SLAVES] = {};")):
             line = line.replace("{}", "{" + slaveList + "}")
             print("entrou")
