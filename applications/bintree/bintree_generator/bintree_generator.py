@@ -24,8 +24,15 @@ slaveList = "bintree_slave0"
 for x in range(1,NUMBER_SLAVES):
    slaveList = slaveList + "," + "bintree_slave" + str(x)
 
-# ## PUBLISH MASTER TO APPLICATION FOLDER
-print( "Generating master .c files")
+### DELETE ALL ".c" FILES IN THE PREVIOUS FOLDER
+dir_name = os.path.normpath(os.getcwd() + os.sep + os.pardir)
+test = os.listdir(dir_name)
+for item in test:
+    if item.endswith(".c"):
+        os.remove(os.path.join(dir_name, item))
+
+
+### PUBLISH MASTER TO APPLICATION FOLDER
 source_filepath = "bintree_master_source.c"
 target_filepath = "../bintree_master.c"
 targetFile_handler = open(target_filepath, "wb+")
@@ -45,7 +52,7 @@ while line:
         line += (str(MAX_SLAVES)  + "\n")
     if (line.__contains__("int Slave[MAX_SLAVES] = {};")):
         line = line.replace("{}", "{" + slaveList + "}")
-        print("entrou")
+        print("Created all master .c files")
         
     targetFile_handler.write(line)
     line = sourceFile_handler.readline()
@@ -55,7 +62,6 @@ targetFile_handler.close()
 
 
 ### GENERATE SALVES
-print( "Generating slave .c files")
 source_file = "bintree_slave_source.c"
 for x in range(0,NUMBER_SLAVES):
     target_file = "../bintree_slave" + str(x) + ".c"
@@ -76,7 +82,7 @@ for x in range(0,NUMBER_SLAVES):
             line += (str(MAX_SLAVES)  + "\n")
         if (line.__contains__("int Slave[MAX_SLAVES] = {};")):
             line = line.replace("{}", "{" + slaveList + "}")
-            print("entrou")
+            print("Created all slave .c files")
 
         targetFile_handler.write(line)
         line = sourceFile_handler.readline()
