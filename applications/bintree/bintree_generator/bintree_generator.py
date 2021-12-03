@@ -9,7 +9,7 @@ import shutil
 ## DEBUG
 
 if len(sys.argv) < 5:
-    print("USAGE: file.py MSG_LENGHT MAXSLAVES NUM.OF.SLAVES DEBUG")
+    print("USAGE: python " + sys.argv[0] + " MSG_LENGHT MAXSLAVES NUM.OF.SLAVES DEBUG")
     exit()
 
 MSG_LENGHT = int(sys.argv[1])
@@ -18,8 +18,9 @@ NUMBER_SLAVES = int(sys.argv[3])
 DEBUG = int(sys.argv[4])
 uName = getpass.getuser()
 
-slaveList = ""
 
+# Create slave list to input to .c header
+slaveList = ""
 slaveList = "bintree_slave0"
 for x in range(1,NUMBER_SLAVES):
    slaveList = slaveList + "," + "bintree_slave" + str(x)
@@ -40,7 +41,7 @@ sourceFile_handler = open(source_filepath, "r+")
 
 line = sourceFile_handler.readline()
 while line:
-
+    print("Creating master files")
     if (line.__contains__("#define MSG_LENGHT")):
         line = line.rstrip('\n')
         line += (str(MSG_LENGHT) +  "\n")
@@ -51,9 +52,7 @@ while line:
         line = line.rstrip('\n')
         line += (str(MAX_SLAVES)  + "\n")
     if (line.__contains__("int Slave[MAX_SLAVES] = {};")):
-        line = line.replace("{}", "{" + slaveList + "}")
-        print("Created all master .c files")
-        
+        line = line.replace("{}", "{" + slaveList + "}")  
     targetFile_handler.write(line)
     line = sourceFile_handler.readline()
 
@@ -61,16 +60,15 @@ sourceFile_handler.close()
 targetFile_handler.close()
 
 
-### GENERATE SALVES
+### GENERATE SLAVES
 source_file = "bintree_slave_source.c"
 for x in range(0,NUMBER_SLAVES):
+    print("Creating slave " + str(x) + "file...")
     target_file = "../bintree_slave" + str(x) + ".c"
     targetFile_handler = open(target_file, "wb+")
     sourceFile_handler = open(source_file, "r+")
-
     line = sourceFile_handler.readline()
     while line:
-
         if (line.__contains__("#define MSG_LENGHT")):
             line = line.rstrip('\n')
             line += (str(MSG_LENGHT)  + "\n")
@@ -82,8 +80,6 @@ for x in range(0,NUMBER_SLAVES):
             line += (str(MAX_SLAVES)  + "\n")
         if (line.__contains__("int Slave[MAX_SLAVES] = {};")):
             line = line.replace("{}", "{" + slaveList + "}")
-            print("Created all slave .c files")
-
         targetFile_handler.write(line)
         line = sourceFile_handler.readline()
 

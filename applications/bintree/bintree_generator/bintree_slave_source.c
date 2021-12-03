@@ -10,8 +10,6 @@
 int Slave[MAX_SLAVES] = {};
 // end
 
-
-
 Message msg;
 
 
@@ -55,6 +53,8 @@ int main()
 
 	msg_payload[0] = sum;
 	sendInt(msg_payload);
+
+	Echo("Message sent, stopping slave"); 
 	
 
 	exit();		
