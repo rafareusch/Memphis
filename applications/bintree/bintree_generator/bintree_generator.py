@@ -34,13 +34,13 @@ sourceFile_handler = open(source_filepath, "r+")
 line = sourceFile_handler.readline()
 while line:
 
-    if (line.__contains__(" MSG_LENGHT")):
+    if (line.__contains__("#define MSG_LENGHT")):
         line = line.rstrip('\n')
         line += (str(MSG_LENGHT) +  "\n")
-    if (line.__contains__(" NUMBER_OF_SLAVES")):
+    if (line.__contains__("#define NUMBER_OF_SLAVES")):
         line = line.rstrip('\n')
         line += (str(NUMBER_SLAVES) +  "\n")
-    if (line.__contains__(" MAX_SLAVES")):
+    if (line.__contains__("#define MAX_SLAVES")):
         line = line.rstrip('\n')
         line += (str(MAX_SLAVES)  + "\n")
     if (line.__contains__("int Slave[MAX_SLAVES] = {};")):
@@ -65,13 +65,13 @@ for x in range(0,NUMBER_SLAVES):
     line = sourceFile_handler.readline()
     while line:
 
-        if (line.__contains__(" MSG_LENGHT")):
+        if (line.__contains__("#define MSG_LENGHT")):
             line = line.rstrip('\n')
             line += (str(MSG_LENGHT)  + "\n")
-        if (line.__contains__(" NUMBER_OF_SLAVES")):
+        if (line.__contains__("v NUMBER_OF_SLAVES")):
             line = line.rstrip('\n')
             line += (str(NUMBER_SLAVES) + "\n")
-        if (line.__contains__(" MAX_SLAVES")):
+        if (line.__contains__("#define MAX_SLAVES")):
             line = line.rstrip('\n')
             line += (str(MAX_SLAVES)  + "\n")
         if (line.__contains__("int Slave[MAX_SLAVES] = {};")):
