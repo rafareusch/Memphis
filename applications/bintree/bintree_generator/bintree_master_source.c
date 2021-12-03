@@ -21,12 +21,12 @@ int main()
 	int input_text[16];
     Echo(itoa(GetTick()));
 
-	// calculate number of block and pad value (PCKS5) of last block
-	
 
+	
+	// SEND TO SLAVES
 	for( x=0 ; x < MAX_SLAVES ; x++ ){
         msg.length = sizeof(aux_msg);
-		aux_msg[0] = 1+x;
+		aux_msg[0] = x;
 		aux_msg[1] = 2+x;
 		aux_msg[2] = 3+x;
 		__builtin_memcpy(&msg.msg, &aux_msg, 4*msg.length);
@@ -35,15 +35,15 @@ int main()
 	Echo("Master sent message to slaves, waiting response...");
 
 
-	for( x=0 ; x < MAX_SLAVES ; x++ ){
-		Receive(&msg, Slave[x]);
-		__builtin_memcpy(input_text, msg.msg, 12);
-			
-		Echo(" ");
-		Echo("Master received SUM from slave:");
-		Echo(itoh(input_text[0]));		
-	}
-	
+
+	// RECEIVE FROM SLAVE 0
+	Receive(&msg, Slave[0]);
+	__builtin_memcpy(input_text, msg.msg, 12);
+		
+	Echo(" ");
+	Echo("Master received SUM from slave:");
+	Echo(itoh(input_text[0]));		
+
 	
 	exit();		
 }

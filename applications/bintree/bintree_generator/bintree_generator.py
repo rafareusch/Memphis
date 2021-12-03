@@ -38,10 +38,10 @@ source_filepath = "bintree_master_source.c"
 target_filepath = "../bintree_master.c"
 targetFile_handler = open(target_filepath, "wb+")
 sourceFile_handler = open(source_filepath, "r+")
-
+print("Creating master files")
 line = sourceFile_handler.readline()
 while line:
-    print("Creating master files")
+
     if (line.__contains__("#define MSG_LENGHT")):
         line = line.rstrip('\n')
         line += (str(MSG_LENGHT) +  "\n")
