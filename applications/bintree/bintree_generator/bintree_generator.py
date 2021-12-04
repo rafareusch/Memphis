@@ -25,13 +25,14 @@ slaveList = "bintree_slave0"
 for x in range(1,NUMBER_SLAVES):
    slaveList = slaveList + "," + "bintree_slave" + str(x)
 
-### DELETE ALL ".c" FILES IN THE PREVIOUS FOLDER
+### DELETE ALL ".c" AND ".h" FILES IN THE PREVIOUS FOLDER
 dir_name = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 test = os.listdir(dir_name)
 for item in test:
     if item.endswith(".c"):
         os.remove(os.path.join(dir_name, item))
-
+    if item.endswith(".h"):
+        os.remove(os.path.join(dir_name, item))
 
 ### PUBLISH MASTER TO APPLICATION FOLDER
 source_filepath = "bintree_master_source.c"
@@ -53,6 +54,21 @@ while line:
         line += (str(MAX_SLAVES)  + "\n")
     if (line.__contains__("int Slave[MAX_SLAVES] = {};")):
         line = line.replace("{}", "{" + slaveList + "}")  
+    targetFile_handler.write(line)
+    line = sourceFile_handler.readline()
+
+sourceFile_handler.close()
+targetFile_handler.close()
+
+### PUBLISH HEADER TO APPLICATION FOLDER
+source_filepath = "bintree.h"
+target_filepath = "../bintree.h"
+targetFile_handler = open(target_filepath, "wb+")
+sourceFile_handler = open(source_filepath, "r+")
+print("Creating master files")
+line = sourceFile_handler.readline()
+while line:
+  
     targetFile_handler.write(line)
     line = sourceFile_handler.readline()
 
