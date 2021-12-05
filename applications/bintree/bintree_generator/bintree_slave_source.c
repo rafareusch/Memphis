@@ -7,8 +7,8 @@
 // begin
 #define MSG_LENGHT			
 #define NUMBER_OF_SLAVES	
-#define MAX_SLAVES		 	
-int Slave[MAX_SLAVES] = {};
+	 	
+int Slave[NUMBER_OF_SLAVES] = {};
 // end
 
 Message msg;
@@ -76,7 +76,7 @@ int main()
 
 	slave_id = recv_value[0];
 	Echo("Slave received from master:");
-	for(i=0; i<3;i++){
+	for(i=0; i<4;i++){
 		Echo(itoh(recv_value[i]));		
 	}
 	int internalSum = recv_value[0] + recv_value[1] + recv_value[2];
@@ -92,15 +92,14 @@ int main()
 
 
 	// START PROCESSING 
-	
-	int NUM_SLAVES = MAX_SLAVES;
+	int NUM_SLAVES = NUMBER_OF_SLAVES;
 	Echo("N slaves: ");
 	Echo(itoh(NUM_SLAVES));
-	int NUM_LAYERS = MAX_SLAVES/2;
+	int NUM_LAYERS = NUMBER_OF_SLAVES/2;
 
 	int layer = 0;
 	int step = 1;
-	int num_slaves_layer = MAX_SLAVES;
+	int num_slaves_layer = NUMBER_OF_SLAVES;
 
 
 	while (layer < NUM_LAYERS)

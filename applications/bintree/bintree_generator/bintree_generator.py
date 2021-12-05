@@ -8,14 +8,13 @@ import shutil
 ## NUMER OF SAVES 
 ## DEBUG
 
-if len(sys.argv) < 5:
-    print("USAGE: python " + sys.argv[0] + " MSG_LENGHT MAXSLAVES NUM.OF.SLAVES DEBUG")
+if len(sys.argv) < 4:
+    print("USAGE: python " + sys.argv[0] + " MSG_LENGHT NUM_OF_SLAVES DEBUG")
     exit()
 
 MSG_LENGHT = int(sys.argv[1])
-MAX_SLAVES = int(sys.argv[2])
-NUMBER_SLAVES = int(sys.argv[3])
-DEBUG = int(sys.argv[4])
+NUMBER_SLAVES = int(sys.argv[2])
+DEBUG = int(sys.argv[3])  #NOT USED
 uName = getpass.getuser()
 
 
@@ -34,6 +33,7 @@ for item in test:
     if item.endswith(".h"):
         os.remove(os.path.join(dir_name, item))
 
+
 ### PUBLISH MASTER TO APPLICATION FOLDER
 source_filepath = "bintree_master_source.c"
 target_filepath = "../bintree_master.c"
@@ -42,23 +42,20 @@ sourceFile_handler = open(source_filepath, "r+")
 print("Creating master files")
 line = sourceFile_handler.readline()
 while line:
-
     if (line.__contains__("#define MSG_LENGHT")):
         line = line.rstrip('\n')
         line += (str(MSG_LENGHT) +  "\n")
     if (line.__contains__("#define NUMBER_OF_SLAVES")):
         line = line.rstrip('\n')
         line += (str(NUMBER_SLAVES) +  "\n")
-    if (line.__contains__("#define MAX_SLAVES")):
-        line = line.rstrip('\n')
-        line += (str(MAX_SLAVES)  + "\n")
-    if (line.__contains__("int Slave[MAX_SLAVES] = {};")):
+    if (line.__contains__("int Slave[NUMBER_OF_SLAVES] = {};")):
         line = line.replace("{}", "{" + slaveList + "}")  
     targetFile_handler.write(line)
     line = sourceFile_handler.readline()
 
 sourceFile_handler.close()
 targetFile_handler.close()
+
 
 ### PUBLISH HEADER TO APPLICATION FOLDER
 source_filepath = "bintree.h"
@@ -68,7 +65,6 @@ sourceFile_handler = open(source_filepath, "r+")
 print("Creating master files")
 line = sourceFile_handler.readline()
 while line:
-  
     targetFile_handler.write(line)
     line = sourceFile_handler.readline()
 
@@ -88,13 +84,10 @@ for x in range(0,NUMBER_SLAVES):
         if (line.__contains__("#define MSG_LENGHT")):
             line = line.rstrip('\n')
             line += (str(MSG_LENGHT)  + "\n")
-        if (line.__contains__("v NUMBER_OF_SLAVES")):
+        if (line.__contains__("#define NUMBER_OF_SLAVES")):
             line = line.rstrip('\n')
             line += (str(NUMBER_SLAVES) + "\n")
-        if (line.__contains__("#define MAX_SLAVES")):
-            line = line.rstrip('\n')
-            line += (str(MAX_SLAVES)  + "\n")
-        if (line.__contains__("int Slave[MAX_SLAVES] = {};")):
+        if (line.__contains__("int Slave[NUMBER_OF_SLAVES] = {};")):
             line = line.replace("{}", "{" + slaveList + "}")
         targetFile_handler.write(line)
         line = sourceFile_handler.readline()

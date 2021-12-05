@@ -1,15 +1,11 @@
 #include <stdlib.h>
 #include <api.h>
 
-///////// DONT CHANGE
-// REMOVE VALUES BEFORE COMPILING
+///////// DON'T MODIFY!! 
 // begin
 #define MSG_LENGHT			
-#define NUMBER_OF_SLAVES	
-#define MAX_SLAVES		 	
-
-
-int Slave[MAX_SLAVES] = {};
+#define NUMBER_OF_SLAVES			 	
+int Slave[NUMBER_OF_SLAVES] = {};
 // end
 
 Message msg;
@@ -24,7 +20,7 @@ int main()
 
 	
 	// SEND TO SLAVES
-	for( x=0 ; x < MAX_SLAVES ; x++ ){
+	for( x=0 ; x < NUMBER_OF_SLAVES ; x++ ){
         msg.length = sizeof(aux_msg);
 		aux_msg[0] = x;
 		aux_msg[1] = 2+x;
