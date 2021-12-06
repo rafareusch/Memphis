@@ -7,7 +7,7 @@
 // begin
 #define MSG_LENGHT			
 #define NUMBER_OF_SLAVES	
-	 	
+
 int Slave[NUMBER_OF_SLAVES] = {};
 // end
 
@@ -104,8 +104,6 @@ int main()
 
 	while (layer < NUM_LAYERS)
 	{
-		
-		
 		Echo("------------------------");
 		Echo("layer: ");
 		Echo(itoh(layer));
@@ -114,8 +112,11 @@ int main()
 		Echo("step: ");
 		Echo(itoh(step));
 		
-
-		if ( isPair(num_slaves_layer) == false && slave_id == (NUM_SLAVES-step))
+		if (slave_id % step != 0){
+			Echo("slave not on layer... stopping");
+			break;
+		} 
+		else if ( isPair(num_slaves_layer) == false && slave_id == (NUM_SLAVES-step))
 		{
 			msg_payload[0] = internalSum;
 			sendIntToSlave(msg_payload,slave_id-(step*2));
@@ -168,7 +169,7 @@ int main()
 	}
 
 
-	Echo("stopping slave"); 
+	Echo("Stopping slave"); 
 	
 
 	exit();		

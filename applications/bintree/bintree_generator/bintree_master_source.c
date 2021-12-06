@@ -17,9 +17,8 @@ int main()
 	int input_text[16];
     Echo(itoa(GetTick()));
 
-
-	
-	// SEND TO SLAVES
+	/// Configure slaves and send data.
+	// First value of First message sent to slave will be his ID
 	for( x=0 ; x < NUMBER_OF_SLAVES ; x++ ){
         msg.length = sizeof(aux_msg);
 		aux_msg[0] = x;
@@ -29,7 +28,6 @@ int main()
 		Send(&msg, Slave[x]);  
 	}
 	Echo("Master sent message to slaves, waiting response...");
-
 
 
 	// RECEIVE FROM SLAVE 0
