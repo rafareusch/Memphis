@@ -79,7 +79,7 @@ int main()
 		Echo(itoh(recv_value[i]));		
 	}
 	Echo(" ");
-	
+	int internalSum = recv_value[0] + recv_value[1] + recv_value[2];
 	Echo("Slave ID:"); 
 	Echo(itoh(slave_id));
 	Echo("Soma:"); 
@@ -94,7 +94,7 @@ int main()
 
 	// APPLICATION
 	// this example application will sum every received value and send thru the binary tree
-		int internalSum = recv_value[0] + recv_value[1] + recv_value[2];
+	
 	// 
 
 
