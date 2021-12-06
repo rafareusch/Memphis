@@ -67,19 +67,21 @@ int main()
 
 
 	// RECEIVE FROM MASTER AND CALCULATE INTERNAL SUM
-	// 		0 - ID
-	// 		1 - TRASH
-	// 		2 - TRASH
-
+	// 		0 - SLAVE_ID
+	// 		1 - DATA TO PROCESS
+	// 		2 - DATA TO PROCESS
 	Receive(&msg, bintree_master);
 	__builtin_memcpy(recv_value, msg.msg, 12);
-
 	slave_id = recv_value[0];
+
 	Echo("Slave received from master:");
 	for(i=0; i<4;i++){
 		Echo(itoh(recv_value[i]));		
 	}
-	int internalSum = recv_value[0] + recv_value[1] + recv_value[2];
+	Echo(" ");
+	
+	Echo("Slave ID:"); 
+	Echo(itoh(slave_id));
 	Echo("Soma:"); 
 	Echo(itoh(internalSum));
 
@@ -90,10 +92,15 @@ int main()
 
 
 
+	// APPLICATION
+	// this example application will sum every received value and send thru the binary tree
+		int internalSum = recv_value[0] + recv_value[1] + recv_value[2];
+	// 
 
-	// START PROCESSING 
+
+	//// Binary tree operation
 	int NUM_SLAVES = NUMBER_OF_SLAVES;
-	Echo("N slaves: ");
+	Echo("Number of total slaves: ");
 	Echo(itoh(NUM_SLAVES));
 	int NUM_LAYERS = NUMBER_OF_SLAVES/2;
 
@@ -102,7 +109,7 @@ int main()
 	int num_slaves_layer = NUMBER_OF_SLAVES;
 
 
-	while (layer < NUM_LAYERS)
+	while (layer <= NUM_LAYERS)
 	{
 		Echo("------------------------");
 		Echo("layer: ");
@@ -112,28 +119,22 @@ int main()
 		Echo("step: ");
 		Echo(itoh(step));
 		
+		
 		if (slave_id % step != 0){
-			Echo("slave not on layer... stopping");
+			Echo("Slave is not on layer...");
 			break;
 		} 
-		else if ( isPair(num_slaves_layer) == false && slave_id == (NUM_SLAVES-step))
-		{
-			msg_payload[0] = internalSum;
-			sendIntToSlave(msg_payload,slave_id-(step*2));
-			Echo("Sent to");
-			Echo(itoh(slave_id-(step*2)));
-			Echo("data:");
-			Echo(itoh(internalSum));
-			Echo(" ");
-		}
 		else if ( slave_id != 0 && isPair(num_slaves_layer) && isPair(slave_id / step)){
 			recv_int = ReceiveFromSlave(slave_id+step);
 			
 			Echo("Received from");
 			Echo(itoh(slave_id+step));
 			Echo("data:");
-			Echo(itoh(internalSum));
+			Echo(itoh(recv_int));
 			Echo(" ");
+			// APPLICATION 
+			// in this example the slave will sum received value with our internal sum
+			// your application must handle this received value.
 			internalSum += recv_int;
 		}
 		else if ( slave_id != 0 && isPair(num_slaves_layer) && isPair(slave_id / step) == FALSE ){
@@ -145,22 +146,26 @@ int main()
 			Echo(itoh(internalSum));
 			Echo(" ");
 		}
-		else if( slave_id == 0 && layer < NUM_LAYERS - 1 ){
+		else if( slave_id == 0 && num_slaves_layer > 1 ){
 			recv_int = ReceiveFromSlave(slave_id+step);
-			
 			Echo("Received from");
 			Echo(itoh(slave_id+step));
 			Echo("data:");
-			Echo(itoh(internalSum));
+			Echo(itoh(recv_int));
 			Echo(" ");
+			// APPLICATION 
+			// in this example the slave will sum received value with our internal sum
+			// your application must handle this received value.
 			internalSum += recv_int;
 		} 
-		else if(  slave_id == 0 && layer == NUM_LAYERS - 1 ){
+		else if(  slave_id == 0 && num_slaves_layer <= 1 ){
 			Echo("Sending to master.. sum:");
 			Echo(itoh(internalSum));
+			// package application result to payload and send to master
 			msg_payload[0] = internalSum;
 			sendIntToMaster(msg_payload);
 			Echo(" ");
+			break;
 		}
 
 		num_slaves_layer = (NUM_SLAVES/(2^layer));
@@ -170,7 +175,5 @@ int main()
 
 
 	Echo("Stopping slave"); 
-	
-
 	exit();		
 }

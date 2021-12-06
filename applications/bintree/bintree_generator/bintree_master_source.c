@@ -18,7 +18,8 @@ int main()
     Echo(itoa(GetTick()));
 
 	/// Configure slaves and send data.
-	// First value of First message sent to slave will be his ID
+	// First value of First message sent to slave will be his ID -> do not change
+	// Second and Third Values are data values where your slave application will consume.
 	for( x=0 ; x < NUMBER_OF_SLAVES ; x++ ){
         msg.length = sizeof(aux_msg);
 		aux_msg[0] = x;
